@@ -1,70 +1,33 @@
-# Getting Started with Create React App
+# Aplicação React utilizando api do github
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Objetivo
+Desenvolver página em react que dado um usuário liste os repositórios públicos
 
-## Available Scripts
+## Features
+- pesquisa de usuário
+- autocomplete
+- listagem de repositórios de um usuário pesquisado
+- responsividade
+- resumo do usuário do usuário pesquisado
+- autenticação OAuth
+- dar star em um repositório
 
-In the project directory, you can run:
+### Observações
 
-### `npm start`
+- Infelizmente a api do github ainda não possui um jeito de fazer totalmente o fluxo de OAuth pelo frontend (https://github.com/isaacs/github/issues/330), então para isso é preciso no mínimo utilizar um servidor de proxy para fazer a request de autenticação final. Utilizei um proxy que foi criado justamente para essas situações em desenvolvimento, acesse https://cors-anywhere.herokuapp.com/ para liberar temporariamente o proxy nesta aplicação.
+- Como era um projeto simples e de um desenvolvedor não foi utilizado typescript e/ou redux, que são tecnologias que possuo conhecimento mas só deixariam o projeto desnecessariamente maior
+- Nenhuma biblioteca de componentes/interface foi utilizada
+- A aplicação foi desenvolvida utilizando os novos fuction-components/react-hooks, mas poderia também ter sido utilazados class-components
+- Padronização de código com eslint
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Detalhes das páginas
+- Na primeira página, o input de pesquisa possui algumas animações tanto no input em si quanto no autocomplete
+- o input também só irá fazer a pesquisa do auto complete quando o usuário parar de digitar, assim economizando o número de requests e o consumo de dados
+- Não é necessário que para entrar em alguma lista de repositórios você use necessáriamente o input, você pode utilizar o próprio link ex.: http://localhost:3000/usuario-que-deseja-pesquisar. Assim é possível um usuário que já tiver um link entrar diretamente na página
+- Para dispositivos pequenos, a partir de uma certa largura, os detalhes do usuário iram desaparecer para a melhor visualização da lista
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### Referências
+- https://docs.github.com/en/rest
+- http://animista.net/ para parte das animações
+- google imagens para plano de fundos e outras imagens de preenchimento
+- e o rei de todos, https://stackoverflow.com/
