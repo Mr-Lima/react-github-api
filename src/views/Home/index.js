@@ -14,7 +14,9 @@ export default function Home() {
   useDebouncedEffect(
     () => {
       if (search !== '')
-        searchUsers(search).then((value) => setSearchList(value.items));
+        searchUsers(search)
+          .then((value) => setSearchList(value.items))
+          .catch((err) => alert(err.toString()));
       else setSearchList([]);
     },
     500,
@@ -31,6 +33,7 @@ export default function Home() {
 
   const cleanupCredentials = () => {
     sessionStorage.clear();
+    alert('deslogado');
   };
 
   const handleSubmit = (value) => {

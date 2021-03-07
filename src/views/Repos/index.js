@@ -81,6 +81,9 @@ export default function Repos() {
         </div>
       </div>
       <List items={repos} onClick={handleClick} />
+      <div className="repos-footer" onClick={() => history.replace('/')}>
+        INICIO
+      </div>
     </div>
   );
 }

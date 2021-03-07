@@ -11,11 +11,17 @@ export default function Auth() {
     const params = new URLSearchParams(qs);
 
     if (params.has('code')) {
-      getToken(params.get('code')).then(() => {
-        const cache = `${sessionStorage.getItem('routeBeforeLogin')}`;
-        sessionStorage.removeItem('routeBeforeLogin');
-        history.replace(cache);
-      });
+      getToken(params.get('code'))
+        .then(() => {
+          const cache = `${sessionStorage.getItem('routeBeforeLogin')}`;
+          sessionStorage.removeItem('routeBeforeLogin');
+          history.replace(cache);
+        })
+        .catch(() => {
+          alert(
+            'Favor, permitir cors proxy em https://cors-anywhere.herokuapp.com'
+          );
+        });
     }
   }, [history]);
 

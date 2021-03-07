@@ -6,72 +6,55 @@ const githubAPI = axios.create({
 });
 
 export async function searchUsers(name) {
-  try {
-    const res = await githubAPI.get('/search/users', {
-      params: {
-        q: name,
-        per_page: 5,
-      },
-    });
+  const res = await githubAPI.get('/search/users', {
+    params: {
+      q: name,
+      per_page: 5,
+    },
+  });
 
-    return res.data;
-  } catch (err) {
-    console.log(err);
-  }
+  return res.data;
 }
 
 export async function getUser(user) {
-  try {
-    const res = await githubAPI.get(`/users/${user}`, {
-      headers: {
-        Accept: 'application/vnd.github.v3+json',
-      },
-    });
+  const res = await githubAPI.get(`/users/${user}`, {
+    headers: {
+      Accept: 'application/vnd.github.v3+json',
+    },
+  });
 
-    return res.data;
-  } catch (err) {
-    console.log(err);
-  }
+  return res.data;
 }
 
 export async function getRepos(user) {
-  try {
-    const res = await githubAPI.get(`/users/${user}/repos`, {
-      headers: {
-        Accept: 'application/vnd.github.v3+json',
-      },
-    });
+  const res = await githubAPI.get(`/users/${user}/repos`, {
+    headers: {
+      Accept: 'application/vnd.github.v3+json',
+    },
+  });
 
-    return res.data;
-  } catch (err) {
-    console.log(err);
-  }
+  return res.data;
 }
 
 //https://github.com/isaacs/github/issues/330
 export async function getToken(code) {
-  try {
-    const res = await axios.post(
-      'https://cors-anywhere.herokuapp.com/https://github.com/login/oauth/access_token',
-      {
-        client_id: process.env.REACT_APP_CLIENT_ID,
-        client_secret: process.env.REACT_APP_CLIENT_SEC,
-        code,
+  const res = await axios.post(
+    'https://cors-anywhere.herokuapp.com/https://github.com/login/oauth/access_token',
+    {
+      client_id: process.env.REACT_APP_CLIENT_ID,
+      client_secret: process.env.REACT_APP_CLIENT_SEC,
+      code,
+    },
+    {
+      headers: {
+        Accept: 'application/json',
+        'Access-Control-Allow-Origin': '*',
       },
-      {
-        headers: {
-          Accept: 'application/json',
-          'Access-Control-Allow-Origin': '*',
-        },
-      }
-    );
+    }
+  );
 
-    sessionStorage.setItem('githubtoken', res.data.access_token);
-    return res.data;
-  } catch (err) {
-    console.log(err);
-    alert('Favor, permitir cors proxy em https://cors-anywhere.herokuapp.com');
-  }
+  sessionStorage.setItem('githubtoken', res.data.access_token);
+  return res.data;
 }
 
 export async function starRepo(owner, repo) {
