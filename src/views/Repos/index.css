@@ -1,0 +1,37 @@
+.repos-container {
+  display: grid;
+  grid-template-rows: 120px 1fr;
+  margin: 0 auto;
+  max-width: 800px;
+  width: 70%;
+  max-height: 100vh;
+}
+
+.repos-header {
+  background-color: rgb(43, 43, 43);
+  display: grid;
+  grid-template-columns: 20% 1fr 30%;
+  color: white;
+  box-shadow: 0px 24px 18px 3px rgba(0, 0, 0, 0.83);
+}
+
+.repos-header-middle {
+}
+
+.repos-header-right {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  flex-direction: column;
+  padding: 0 16px;
+}
+
+@media screen and (max-width: 768px) {
+  .repos-container {
+    grid-template-rows: 1fr;
+  }
+
+  .repos-header {
+    display: none;
+  }
+}
