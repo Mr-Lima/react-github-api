@@ -1,13 +1,16 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-import { getRepos, getUser, starRepo } from '../../api';
+import GithubApi from '../../api';
 import List from '../../components/List';
+import useFetchData from '../../hooks/useFetchData';
+import { requestError } from '../../utils/functions';
 import './index.css';
 
 export default function Repos() {
   const params = useParams();
   const history = useHistory();
   const [repos, setRepos] = useState([]);
+  const [page, setPage] = useState(1);
   const [user, setUser] = useState({
     login: '...',
     avatar_url: 'https://via.placeholder.com/120',
@@ -16,33 +19,43 @@ export default function Repos() {
     followers: 0,
   });
 
+  // useful hook for fetching data in a component
+  const [reposData, isErrorRepos] = useFetchData(
+    GithubApi.getRepos,
+    params.user,
+    page
+  );
+
+  //fetch user
+  const [userData, isErrorUser] = useFetchData(GithubApi.getUser, params.user);
+
   useEffect(() => {
-    getUser(params.user).then((res) => {
-      setUser(res);
-    });
+    if (reposData) setRepos(repos.concat(reposData));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [reposData]);
 
   useEffect(() => {
-    getRepos(params.user).then((data) => {
-      setRepos(data);
-    });
-  }, [params]);
+    if (userData) setUser(userData);
+  }, [userData]);
 
-  const handleClick = useCallback(
+  useEffect(() => {
+    if (isErrorRepos || isErrorUser) requestError('');
+  }, [isErrorRepos, isErrorUser]);
+
+  const verifyAuthUserForStar = useCallback(
     (item) => {
-      const token = sessionStorage.getItem('githubtoken');
-
-      if (token) {
+      function handleStarRepo(item) {
         item.request = 'loading';
-        setRepos([...repos]);
 
-        starRepo(item.owner.login, item.name).then(() => {
-          item.request = 'success';
-          item.starred = true;
-          setRepos([...repos]);
-        });
-      } else {
+        GithubApi.starRepo(item.owner.login, item.name)
+          .then(() => {
+            item.request = 'success';
+            setRepos([...repos]);
+          })
+          .catch(requestError);
+      }
+
+      function handleUserNotAuth(item) {
         sessionStorage.setItem(
           'routeBeforeLogin',
           `${history.location.pathname}?id=${item.id}`
@@ -50,20 +63,40 @@ export default function Repos() {
 
         window.location = `https://github.com/login/oauth/authorize?client_id=${process.env.REACT_APP_CLIENT_ID}&redirect_uri=http://localhost:3000/auth&scope=repo`;
       }
+
+      const token = sessionStorage.getItem('githubtoken');
+
+      if (token) handleStarRepo(item);
+      else handleUserNotAuth(item);
     },
     [history, repos]
   );
 
+  /**
+   * get the id of repository the wanted to star before authentication
+   */
   useEffect(() => {
+    console.log('verify id');
     const qs = window.location.search;
     const params = new URLSearchParams(qs);
 
     if (params.has('id')) {
       const btnId = params.get('id');
-      if (repos.length > 0) handleClick(repos.find((el) => el.id === +btnId));
+      if (repos.length > 0)
+        // we still have to verify the user because of direct url input in address bar
+        verifyAuthUserForStar(repos.find((el) => el.id === +btnId));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [repos.length]);
+
+  const addMoreToRepos = useCallback(() => {
+    setPage(page + 1);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page]);
+
+  useEffect(() => {
+    console.log({ repos, user, page, isErrorRepos, isErrorUser });
+  });
 
   return (
     <div className="repos-container">
@@ -80,7 +113,11 @@ export default function Repos() {
           <span>Seguidores: {user.followers}</span>
         </div>
       </div>
-      <List items={repos} onClick={handleClick} />
+      <List
+        items={repos}
+        onClick={verifyAuthUserForStar}
+        endListCallback={addMoreToRepos}
+      />
       <div className="repos-footer" onClick={() => history.replace('/')}>
         INICIO
       </div>

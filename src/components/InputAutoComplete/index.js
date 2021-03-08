@@ -4,7 +4,7 @@ import './index.css';
 
 export default function InputAutoComplete({
   value,
-  handleChange,
+  onChange,
   placeholder,
   style,
   objArr,
@@ -25,7 +25,7 @@ export default function InputAutoComplete({
         className="input"
         placeholder={placeholder}
         value={value}
-        onChange={handleChange}
+        onChange={onChange}
         style={style}
       />
       <div
@@ -55,7 +55,7 @@ export default function InputAutoComplete({
 
 InputAutoComplete.propTypes = {
   value: PropTypes.string,
-  handleChange: PropTypes.func,
+  onChange: PropTypes.func,
   placeholder: PropTypes.string,
   style: PropTypes.object,
   objArr: PropTypes.array,

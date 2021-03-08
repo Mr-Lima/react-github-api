@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import Loading from '../../assets/loading.gif';
-import { getToken } from '../../api';
+import GithubApi from '../../api';
 
 export default function Auth() {
   const history = useHistory();
@@ -11,7 +11,7 @@ export default function Auth() {
     const params = new URLSearchParams(qs);
 
     if (params.has('code')) {
-      getToken(params.get('code'))
+      GithubApi.getToken(params.get('code'))
         .then(() => {
           const cache = `${sessionStorage.getItem('routeBeforeLogin')}`;
           sessionStorage.removeItem('routeBeforeLogin');
@@ -21,6 +21,7 @@ export default function Auth() {
           alert(
             'Favor, permitir cors proxy em https://cors-anywhere.herokuapp.com'
           );
+          history.replace('/');
         });
     }
   }, [history]);
