@@ -55,11 +55,13 @@ export default function Repos() {
           .catch(requestError);
       }
 
-      function handleUserNotAuth(item) {
+      function handleUserNotAuth() {
         sessionStorage.setItem(
           'routeBeforeLogin',
-          `${history.location.pathname}?id=${item.id}`
+          `${history.location.pathname}`
         );
+
+        alert('Você ainda não está logado, redirecionando para github');
 
         window.location = `https://github.com/login/oauth/authorize?client_id=${process.env.REACT_APP_CLIENT_ID}&redirect_uri=http://localhost:3000/auth&scope=repo`;
       }
@@ -67,27 +69,10 @@ export default function Repos() {
       const token = sessionStorage.getItem('githubtoken');
 
       if (token) handleStarRepo(item);
-      else handleUserNotAuth(item);
+      else handleUserNotAuth();
     },
     [history, repos]
   );
-
-  /**
-   * get the id of repository the wanted to star before authentication
-   */
-  useEffect(() => {
-    console.log('verify id');
-    const qs = window.location.search;
-    const params = new URLSearchParams(qs);
-
-    if (params.has('id')) {
-      const btnId = params.get('id');
-      if (repos.length > 0)
-        // we still have to verify the user because of direct url input in address bar
-        verifyAuthUserForStar(repos.find((el) => el.id === +btnId));
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [repos.length]);
 
   const addMoreToRepos = useCallback(() => {
     setPage(page + 1);
