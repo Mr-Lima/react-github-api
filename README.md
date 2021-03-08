@@ -19,7 +19,7 @@ Desenvolver página em react que dado um usuário liste os repositórios públic
 - Infelizmente a api do github ainda não possui um jeito de fazer totalmente o fluxo de OAuth pelo frontend (https://github.com/isaacs/github/issues/330), então para isso é preciso no mínimo utilizar um servidor de proxy para fazer a request de autenticação final. Utilizei um proxy que foi criado justamente para essas situações em desenvolvimento, acesse https://cors-anywhere.herokuapp.com/ para liberar temporariamente o proxy nesta aplicação.
 - Como era um projeto simples e de um desenvolvedor não foi utilizado typescript e/ou redux, que são tecnologias que possuo conhecimento mas só deixariam o projeto desnecessariamente maior
 - Nenhuma biblioteca de componentes/interface foi utilizada
-- A aplicação foi desenvolvida utilizando os novos fuction-components/react-hooks, mas poderia também ter sido utilazados class-components
+- A aplicação foi desenvolvida utilizando os novos fuction-components/react-hooks, mas poderia também ter sido utilizados class-components
 - Padronização de código com eslint
 
 ### Detalhes das páginas
